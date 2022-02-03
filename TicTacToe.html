@@ -173,8 +173,8 @@
             }
             console.log(a);
             var rnd = Math.floor((Math.random() * (c - 1)) + 0);
-            var i = a[c - 1][0];
-            var j = a[c - 1][1];
+            var i = a[rnd][0];
+            var j = a[rnd][1];
             Put(tbl.rows[i].cells[j], "O");
             if (IsWin("O"))
                 return true;
