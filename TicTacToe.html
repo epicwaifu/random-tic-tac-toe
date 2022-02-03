@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -21,56 +21,62 @@
             }
         }
         const n = nn;
-        const size = 200;
+        const size = 100;
         var tbl = document.getElementById("tbl");
 
-        for (var i = 0; i < n; i++) { // setting up the board
-            var tr = document.createElement("tr");
-            tbl.appendChild(tr);
-            for (var j = 0; j < n; j++) {
-                var td = document.createElement("td");
-                td.setAttribute("row", i);
-                td.setAttribute("col", j);
-                td.setAttribute("height", size);
-                td.setAttribute("width", size);
-                td.setAttribute("onclick", "PlayerTurn(this);");
-                td.setAttribute("style", "");
-                var r = td.getAttribute("row");
-                var c = td.getAttribute("col");
-                if (r == 0) {
-                    td.setAttribute("style", "border-bottom:solid; ");
-                }
-                else if (r == n - 1) {
-                    td.setAttribute("style", "border-top:solid; ");
-                }
-                else {
-                    td.setAttribute("style", "border-top:solid; border-bottom:solid; ");
-                }
-
-                if (c == 0) {
-                    td.setAttribute("style", td.getAttribute("style") + "border-right:solid; ");
-                }
-                else if (c == n - 1) {
-                    td.setAttribute("style", td.getAttribute("style") + "border-left:solid; ");
-                }
-                else {
-                    td.setAttribute("style", td.getAttribute("style") + "border-right:solid; border-left:solid; ");
-                }
-
-                tr.appendChild(td);
-            }
-        }
+        
+        boardSetUp(n);
         
         
         var b = [];
         for (var i = 0; i < n; i++) {
             b[i] = [];
             for (var j = 0; j < n; j++) {
-                b[i][j] = "";
+                b[i][j] = " ";
             }
         }
         console.log(b);
+
         turn = true;
+
+        function boardSetUp(n) {
+            for (var i = 0; i < n; i++) { // setting up the board
+                var tr = document.createElement("tr");
+                tbl.appendChild(tr);
+                for (var j = 0; j < n; j++) {
+                    var td = document.createElement("td");
+                    td.setAttribute("row", i);
+                    td.setAttribute("col", j);
+                    td.setAttribute("height", size);
+                    td.setAttribute("width", size);
+                    td.setAttribute("onclick", "PlayerTurn(this);");
+                    td.setAttribute("style", "");
+                    var r = td.getAttribute("row");
+                    var c = td.getAttribute("col");
+                    if (r == 0) {
+                        td.setAttribute("style", "border-bottom:solid; ");
+                    }
+                    else if (r == n - 1) {
+                        td.setAttribute("style", "border-top:solid; ");
+                    }
+                    else {
+                        td.setAttribute("style", "border-top:solid; border-bottom:solid; ");
+                    }
+
+                    if (c == 0) {
+                        td.setAttribute("style", td.getAttribute("style") + "border-right:solid; ");
+                    }
+                    else if (c == n - 1) {
+                        td.setAttribute("style", td.getAttribute("style") + "border-left:solid; ");
+                    }
+                    else {
+                        td.setAttribute("style", td.getAttribute("style") + "border-right:solid; border-left:solid; ");
+                    }
+
+                    tr.appendChild(td);
+                }
+            }
+        }
 
         function Put(where, a) { // fun that puts X or O in a td 
             var img = document.createElement("img");
@@ -139,28 +145,25 @@
             return false;
         }
             
-
         function PlayerTurn(td) { // fun that gets a td (fron onclick event). if the td has no children (img of X or O) it puts X (the player's char). if the player wins, returns true, if not, calls for the start of the computer's turn.
             if (turn && td.children.length == 0) {
-                Put(td, "X");
                 turn = false;
+                Put(td, "X");
                 if (IsWin("X"))
                     return true;
                 CompTurn();
             }
             else
-                alert("wait for your turn/not valid placing")
+                alert("wait for your turn/not valid placing");
         }
 
-        
         function CompTurn() { // the fun that handles the computer's turn. it choose a random place on the board to put its char (O) on. returns true if comp won
             var c = 0;
             var a = [];
             for (var i = 0; i < n; i++) {
                 for (var j = 0; j < n; j++) {
                     if (tbl.rows[i].cells[j].children.length == 0) {
-                        a[c] = i * 10 + j;
-                        c++;
+                        a[c++] = [i, j];
                     }
                 }
             }
@@ -168,8 +171,11 @@
                 alert("Draw! you actually could'nt win against a random Tic Tac Toe algorithm")
                 return true;
             }
+            console.log(a);
             var rnd = Math.floor((Math.random() * (c - 1)) + 0);
-            Put(tbl.rows[Math.floor(a[rnd] / 10)].cells[a[rnd] % 10], "O");
+            var i = a[c - 1][0];
+            var j = a[c - 1][1];
+            Put(tbl.rows[i].cells[j], "O");
             if (IsWin("O"))
                 return true;
             turn = true;
