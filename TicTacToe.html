@@ -27,14 +27,10 @@
         
         boardSetUp(n);
         
+
+        var b = MatrixSetUp(n);
+       
         
-        var b = [];
-        for (var i = 0; i < n; i++) {
-            b[i] = [];
-            for (var j = 0; j < n; j++) {
-                b[i][j] = " ";
-            }
-        }
         console.log(b);
 
         turn = true;
@@ -76,6 +72,17 @@
                     tr.appendChild(td);
                 }
             }
+        }
+
+        function MatrixSetUp(n) {
+            var b = [];
+            for (var i = 0; i < n; i++) {
+                b[i] = [];
+                for (var j = 0; j < n; j++) {
+                    b[i][j] = " ";
+                }
+            }
+            return b;
         }
 
         function Put(where, a) { // fun that puts X or O in a td 
@@ -120,8 +127,6 @@
                
             }
 
-            
-            
             for (k = 0; k < n; k++) { //secondary diag
                 if (b[k][n - 1 - k] != who) {
                     break;
@@ -168,7 +173,7 @@
                 }
             }
             if (c == 0) {
-                alert("Draw! you actually could'nt win against a random Tic Tac Toe algorithm")
+                alert("Draw! you actually couldn't win even against a random Tic Tac Toe algorithm!")
                 return true;
             }
             console.log(a);
